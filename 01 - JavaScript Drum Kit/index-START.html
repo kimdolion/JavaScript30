@@ -58,7 +58,25 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  };
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    // could not for the life of me figure out why my code wasn't working
+    // turns out I didn't spell keyCode right. had keycode for the 2nd one.
+    if (!audio) return;
 
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  };
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  // listening to the window (browser) for a keypress (keydown)
+  window.addEventListener('keydown', playSound);
 </script>
 
 
